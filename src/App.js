@@ -1,5 +1,6 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom'
+
 /*
 const Menu = () => (
   <div>    
@@ -9,6 +10,16 @@ const Menu = () => (
   </div>
 )
 */
+
+const Navigation = () => (
+  <nav >
+      <NavLink to="/" activeClassName="active">Home </NavLink> &nbsp;
+      <NavLink to="/anecdotes">anecdotes</NavLink> &nbsp;
+      <NavLink to="/createNew">create new</NavLink> &nbsp;
+      <NavLink to="/about">about</NavLink> &nbsp;
+  </nav>
+);
+
 const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
@@ -58,7 +69,7 @@ const Anecdotes = ({anecdotes}) => {
       <ul>
         {anecdotes.map(anecdote=>
           <li key={anecdote.id}>
-            <Link to={`/anecdote/${anecdote.id}`}>{anecdote.content}</Link>
+            <NavLink to={`/anecdote/${anecdote.id}`}>{anecdote.content}</NavLink>
           </li>
         )}
       </ul>
@@ -164,16 +175,13 @@ class Notification extends React.Component {
 
   render() {
     const style = {
-      color : 'green',
+      color : 'red',
       border: 'solid',
+      borderColor: 'green',
+      borderRadius: '10',
+      borderStyle: 'groove',
       padding: 10,
-      borderWidth: 1
-    }
-
-    const footerStyle = {
-      color: 'green',
-      fontStyle: 'italic',
-      fontSize: 16
+      borderWidth: 4
     }
 
     return (
@@ -246,17 +254,25 @@ class App extends React.Component {
     this.setState({ anecdotes })
   }
   render() {
+
+    const footerStyle = {
+      color: 'green',
+      fontStyle: 'italic',
+      fontSize: 16
+    }
+
+    const naviStyle = {
+      color: 'green',
+      fontStyle: 'italic',
+      fontSize: 16
+    }
+
     return (
       <div>
         <Router>
           <div>
             <h1>Software anecdotes</h1>
-            <div>
-              <Link to="/">home</Link> &nbsp;
-              <Link to="/anecdotes">anecdotes</Link> &nbsp;
-              <Link to="/createNew">create new</Link> &nbsp;
-              <Link to="/about">about</Link>
-            </div>
+            <Navigation/>
             {this.state.isShow ? <Notification not={this.state.notice} clearNotice={this.clearNotice}/> : null}
             <Route exact path="/" render={() => <AnecdoteList anecdotes={this.state.anecdotes} /> } />
             <Route path="/anecdote/:id" render={({match}) => 
@@ -265,7 +281,7 @@ class App extends React.Component {
               <Anecdotes anecdotes={this.state.anecdotes} />}/>
             <Route path="/createNew" render={({history}) => <CreateNew history={history} addNew={this.addNew} > </CreateNew> } />
             <Route path="/about" render={() => <About/>} />
-            <Footer />
+            <div style={footerStyle}><Footer /></div>
           </div>
         </Router>                                                          
       </div>
