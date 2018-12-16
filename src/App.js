@@ -1,5 +1,7 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom'
+import { BrowserRouter as Router, Route, NavLink, Link, Redirect } from 'react-router-dom'
+import { Table, FormGroup, FormControl, ControlLabel, Button, Alert,
+    Navbar, NavbarBrand,NavItem, Nav, MenuItem, NavDropdown } from 'react-bootstrap'
 
 /*
 const Menu = () => (
@@ -10,7 +12,7 @@ const Menu = () => (
   </div>
 )
 */
-
+/*
 const Navigation = () => (
   <nav >
       <NavLink to="/" activeClassName="active">Home </NavLink> &nbsp;
@@ -18,14 +20,98 @@ const Navigation = () => (
       <NavLink to="/createNew">create new</NavLink> &nbsp;
       <NavLink to="/about">about</NavLink> &nbsp;
   </nav>
-);
+);*/
 
+const Login = ({onLogin, history}) => {
+  const onSubmit = (e) => {
+    e.preventDefault()
+    onLogin(e.target.username.value)
+    history.push('/')
+  }  
+  return (
+    <div>
+      <h2>login</h2>
+      <form onSubmit={onSubmit}>
+        <FormGroup>
+          <ControlLabel>username:</ControlLabel>
+          <FormControl
+            type="text"
+            name="username"
+          />
+          <ControlLabel>password:</ControlLabel>
+          <FormControl
+            type="password"
+          />
+          <Button bsStyle="success" type="submit">login</Button>
+        </FormGroup>
+      </form>
+    </div>
+)}
+
+const Navigation = () => (
+  <Navbar inverse collapseOnSelect>
+    <Navbar.Header>
+      <Navbar.Brand>
+        Anecdote app
+      </Navbar.Brand>
+      <Navbar.Toggle />
+    </Navbar.Header>
+    <Navbar.Collapse>
+      <Nav>
+        <NavItem href="#">
+          <Link to="/">home</Link>
+        </NavItem>
+        <NavItem href="#">
+          <Link to="/anecdotes">anecdotes</Link>
+        </NavItem>
+        <NavItem href="#">
+          <Link to="/createNew">create new</Link>
+        </NavItem>
+        <NavItem href="#">
+          <Link to="/users">users</Link>
+        </NavItem>
+        <NavItem> 
+
+        </NavItem>
+      </Nav>
+    </Navbar.Collapse>
+  </Navbar>
+)
+/*
+          {this.state.user
+            ? <em>{this.state.user} logged in</em>
+            : <Link to="/login">login</Link>
+          } 
+*/          
+
+/*
 const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
     <ul>
       {anecdotes.map(anecdote => <li key={anecdote.id} >{anecdote.content}</li>)}
     </ul>  
+  </div>
+)
+*/
+
+const AnecdoteList = ({ anecdotes }) => (
+  <div>
+    <h2>Anecdotes</h2>
+    <Table striped>
+      <tbody>
+      {anecdotes.map(anecdote => 
+        <tr key={anecdote.id} >
+          <td>
+            <NavLink to={'/anecdotes/${anecdote.id'}>{anecdote.content}</NavLink>
+          </td>
+          <td>
+            {anecdote.author}
+          </td>
+        </tr>
+      )} 
+      </tbody>
+    </Table>
   </div>
 )
 
@@ -216,8 +302,16 @@ class App extends React.Component {
         }
       ],
       notice : '',
-      isShow : false
+      isShow : false,
+      user: null
     } 
+  }
+
+  login = (user) => {
+    this.setState({user, message: `welcome ${user}`})
+    setTimeout(() => {
+      this.setState({message: null})
+    }, 10000)
   }
 
   clearNotice = () => {
@@ -270,9 +364,14 @@ class App extends React.Component {
     return (
       <div>
         <Router>
-          <div>
+          <div className="container">
             <h1>Software anecdotes</h1>
-            <Navigation/>
+            {(this.state.message &&
+              <Alert color="success">
+                {this.state.message}
+              </Alert>
+            )}
+            <Navigation style={naviStyle}/>
             {this.state.isShow ? <Notification not={this.state.notice} clearNotice={this.clearNotice}/> : null}
             <Route exact path="/" render={() => <AnecdoteList anecdotes={this.state.anecdotes} /> } />
             <Route path="/anecdote/:id" render={({match}) => 
@@ -281,6 +380,9 @@ class App extends React.Component {
               <Anecdotes anecdotes={this.state.anecdotes} />}/>
             <Route path="/createNew" render={({history}) => <CreateNew history={history} addNew={this.addNew} > </CreateNew> } />
             <Route path="/about" render={() => <About/>} />
+            <Route path="/login" render={({history}) => 
+              <Login history={history} onLogin={this.login}/>} 
+            />
             <div style={footerStyle}><Footer /></div>
           </div>
         </Router>                                                          
