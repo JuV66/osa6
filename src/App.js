@@ -1,7 +1,9 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, NavLink, Link, Redirect } from 'react-router-dom'
 import { Table, FormGroup, FormControl, ControlLabel, Button, Alert,
-    Navbar, NavbarBrand,NavItem, Nav, MenuItem, NavDropdown } from 'react-bootstrap'
+    Navbar, NavbarBrand,NavItem, Nav, MenuItem, NavDropdown,
+    Col, Grid } from 'react-bootstrap'
+import kuva from './250px-Niklaus_Wirth,_UrGU.png'
 
 /*
 const Menu = () => (
@@ -119,12 +121,19 @@ const About = () => (
   <div>
     <h2>About anecdote app</h2>
     <p>According to Wikipedia:</p>
-    
-    <em>An anecdote is a brief, revealing account of an individual person or an incident. 
+    <Grid>
+    <Col xs={12} md={6}>
+      <em>An anecdote is a brief, revealing account of an individual person or an incident. 
       Occasionally humorous, anecdotes differ from jokes because their primary purpose is not simply to provoke laughter but to reveal a truth more general than the brief tale itself, 
       such as to characterize a person by delineating a specific quirk or trait, to communicate an abstract idea about a person, place, or thing through the concrete details of a short narrative. 
-      An anecdote is "a story with a point."</em>
-
+      An anecdote is "a story with a point.""</em>
+    </Col>
+    <Col xs={6} md={6}>
+      <div>
+      <img src={kuva} alt="Niklas Wirth Pascal-kielen keksijä"/>
+      </div>
+    </Col>
+    </Grid>
     <p>Software engineering is full of excellent anecdotes, at this app you can find the best and add more.</p>
   </div>
 )
