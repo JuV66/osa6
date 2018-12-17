@@ -1,9 +1,13 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, NavLink, Link, Redirect } from 'react-router-dom'
+/*
 import { Table, FormGroup, FormControl, ControlLabel, Button, Alert,
     Navbar, NavbarBrand,NavItem, Nav, MenuItem, NavDropdown,
     Col, Grid } from 'react-bootstrap'
+*/
+import { Container, Form, Button, Message, Menu, Table, Grid, Image } from 'semantic-ui-react'
 import kuva from './250px-Niklaus_Wirth,_UrGU.png'
+
 
 /*
 const Menu = () => (
@@ -24,6 +28,8 @@ const Navigation = () => (
   </nav>
 );*/
 
+// bootstrap
+/*
 const Login = ({onLogin, history}) => {
   const onSubmit = (e) => {
     e.preventDefault()
@@ -48,8 +54,35 @@ const Login = ({onLogin, history}) => {
         </FormGroup>
       </form>
     </div>
-)}
+)}*/
 
+//Semantic-ui
+const Login = ({onLogin, history}) => {
+  const onSubmit = (e) => {
+    e.preventDefault()
+    onLogin(e.target.username.value)
+    history.push('/')
+  }  
+  return (
+    <div>
+      <h2>login</h2>
+      <Form onSubmit={onSubmit}>
+        <Form.Field>
+          <label>username</label>
+          <input name='username' />
+        </Form.Field>
+        <Form.Field>
+            <label>password</label>
+            <input type='password' />
+        </Form.Field>
+          <Button type='submit'>login</Button>
+      </Form>
+    </div>
+  )
+}
+
+//Boostrap
+/*
 const Navigation = () => (
   <Navbar inverse collapseOnSelect>
     <Navbar.Header>
@@ -79,6 +112,36 @@ const Navigation = () => (
     </Navbar.Collapse>
   </Navbar>
 )
+
+          {this.state.user
+            ? <em>{this.state.user} logged in</em>
+            : <Link to="/login">login</Link>
+          } 
+
+*/
+//Semantic-ui
+const Navigation = () => (
+  <Menu inverted>
+    <Menu.Item link>
+      <Link to="/">home</Link>
+    </Menu.Item>
+    <Menu.Item link>
+      <Link to="/anecdotes">anecdotes</Link>
+    </Menu.Item>
+    <Menu.Item link>
+      <Link to="/createNew">create new</Link>
+    </Menu.Item>
+    <Menu.Item link>
+      <Link to="/users">users</Link>
+    </Menu.Item>
+    <Menu.Item link>
+      <Link to="/about">about</Link>
+    </Menu.Item>
+  </Menu>
+)
+
+
+
 /*
           {this.state.user
             ? <em>{this.state.user} logged in</em>
@@ -96,7 +159,8 @@ const AnecdoteList = ({ anecdotes }) => (
   </div>
 )
 */
-
+// bootstrap
+/* 
 const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
@@ -111,12 +175,58 @@ const AnecdoteList = ({ anecdotes }) => (
             {anecdote.author}
           </td>
         </tr>
-      )} 
+      )}  
       </tbody>
     </Table>
   </div>
 )
+*/
 
+//semantic-ui
+/*
+const AnecdoteList = ({ anecdotes }) => {
+  return(
+  <div>
+    <h2>Anecdotes</h2>
+    <Table striped>
+      <Table.body>
+      {anecdotes.map(anecdote => 
+        <Table.Row key={anecdote.id} >
+          <Table.Cell>
+            <Link to={'/anecdotes/${anecdote.id'}>{anecdote.content}</Link>
+          </Table.Cell>
+          <Table.Cell>
+            {anecdote.author}
+          </Table.Cell>
+        </Table.Row>
+      )}  
+      </Table.body>
+    </Table>
+  </div>
+)}*/
+const AnecdoteList = ({ anecdotes }) => {
+  return(
+  <div>
+    <h2>Anecdotes</h2>
+    <Table striped>
+      <Table.Body>
+        {anecdotes.map(anecdote => 
+          <Table.Row key={anecdote.id} >
+            <Table.Cell>
+              <Link to={'/anecdotes/${anecdote.id'}>{anecdote.content}</Link>
+            </Table.Cell>
+            <Table.Cell>
+              {anecdote.author}
+            </Table.Cell>
+          </Table.Row>
+        )}
+      </Table.Body>
+    </Table>
+  </div>
+)}
+
+//boostrap
+/*
 const About = () => (
   <div>
     <h2>About anecdote app</h2>
@@ -137,7 +247,30 @@ const About = () => (
     <p>Software engineering is full of excellent anecdotes, at this app you can find the best and add more.</p>
   </div>
 )
-
+*/
+// Semantic-ui
+const About = () => {
+  console.log('About')
+  return(
+  <div>
+    <h2>About anecdote app</h2>
+    <p>According to Wikipedia:</p>
+    <Grid columns={2} divided>
+      <Grid.Row>
+        <Grid.Column>
+          <em>An anecdote is a brief, revealing account of an individual person or an incident. 
+          Occasionally humorous, anecdotes differ from jokes because their primary purpose is not simply to provoke laughter but to reveal a truth more general than the brief tale itself, 
+          such as to characterize a person by delineating a specific quirk or trait, to communicate an abstract idea about a person, place, or thing through the concrete details of a short narrative. 
+          An anecdote is "a story with a point.""</em>
+        </Grid.Column>
+        <Grid.Column>
+          <Image src={kuva}/>    
+        </Grid.Column>
+      </Grid.Row>
+    </Grid>
+    <p>Software engineering is full of excellent anecdotes, at this app you can find the best and add more.</p>
+  </div>
+)}
 const Footer = () => (
   <div>
     Anecdote app for <a href='https://courses.helsinki.fi/fi/TKT21009/121540749'>Full Stack -sovelluskehitys</a>.
@@ -371,14 +504,19 @@ class App extends React.Component {
     }
 
     return (
-      <div>
+      <Container>
         <Router>
-          <div className="container">
+          <div>
             <h1>Software anecdotes</h1>
             {(this.state.message &&
-              <Alert color="success">
+            // boostrap
+            //  <Alert color="success">
+            //    {this.state.message}
+            //  </Alert>
+            // semantic-ui
+              <Message color="success">
                 {this.state.message}
-              </Alert>
+              </Message>
             )}
             <Navigation style={naviStyle}/>
             {this.state.isShow ? <Notification not={this.state.notice} clearNotice={this.clearNotice}/> : null}
@@ -395,7 +533,7 @@ class App extends React.Component {
             <div style={footerStyle}><Footer /></div>
           </div>
         </Router>                                                          
-      </div>
+      </Container>
     )
   }
 }
